@@ -1,9 +1,8 @@
 const express = require("express");
-
-const util = require("util");
-const fs = require("fs");
+const store = require("./db/store");
+var path = require("path");
  
-
+ 
 const app = express();
 
 var PORT = process.env.PORT || 3000;
@@ -11,47 +10,48 @@ var PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-
-app.get("/notes", function(req, res){
-    res.sendFile(path.join(__dirname, "public/notes.html"));
-});
-
-app.get("/", function(req, res){
-    res.sendFile(path.join(__dirname, "public/index.html"));
-});
  
 
 
-app.get("/notes", function (req, res) {
+app.get("/notes", function(req, res){
+    res.sendFile(path.join(__dirname, "/public/notes.html"));
+    console.log("server side1", res );
+});
 
-notes
-        .getnotes()
+app.get("/", function(req, res){
+    res.sendFile(path.join(__dirname, "/public/index.html"));
+    console.log("server side2", res );
+});
+
+ 
+
+
+
+app.get("/api/notes", function (req, res) {
+
+store
+        .getNotes()
         .then(notes => res.json(notes))
 
         .catch(err => res.status(500).json(err));
 });
 
 
-app.post("/notes", function (req, res) {
-
-    notes
-        .postnotes()
-        .then(notes => res.json(notes))
+app.post("/api/notes", function (req, res) {
+    console.log("server side6", res );
+    store
+        .addNote(req.body)
+        .then(note => res.json(note))
 
         .catch(err => res.status(500).json(err));
 });
-app.delete("/notes/:id", function (req, res) {
+app.delete("/api/notes/:id", function (req, res) {
     store
         .removeNote(req.params.id)
         .then(() => res.json({ ok: true }))
         .catch(err => res.status(500).json(err));
 });
-app.put("/notes/:id", function (req, res) {
-    store
-        .updateNOte(req.params.id)
-        .then(() => res.json({ ok: true }))
-        .catch(err => res.status(500).json(err));
-});
+ 
 
 
 

@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/meysamcoding/Note-Taker/issues"
   },
-  "homepage": "https://github.com/meysamcoding/Note-Taker#readme"
+  "homepage": "https://github.com/meysamcoding/Note-Taker#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
